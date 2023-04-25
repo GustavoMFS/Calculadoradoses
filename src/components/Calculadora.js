@@ -7,8 +7,8 @@ const Calculadora = () => {
 
   const calcularDose = () => {
     // Realiza o cálculo da dose
-    const doseIndicada = 10; // Dose indicada do medicamento
-    const concentracao = 5; // Concentração do medicamento
+    const doseIndicada = 0.06; // Dose indicada do medicamento
+    const concentracao = 0.5; // Concentração do medicamento
     const resultado = (doseIndicada * peso) / concentracao;
 
     setVolume(resultado.toFixed(2)); // Atualiza o estado do volume com o resultado do cálculo
