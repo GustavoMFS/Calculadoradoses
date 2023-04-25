@@ -1,60 +1,99 @@
 import React, { useState } from 'react';
-import { SafeAreaView, Text, TextInput, Button, StyleSheet } from 'react-native';
+import { View, TextInput, Button, FlatList, Text, StyleSheet } from 'react-native';
+import {medicamentos, reversores} from '../dados/dadosMedicamentos';
 
-const Calculadora = () => {
-  const [peso, setPeso] = useState('');
-  const [volume, setVolume] = useState('');
+const CalculadoraDosesScreen = () => {
+  const [pesoPaciente, setPesoPaciente] = useState('');
+  const [resultados, setResultados] = useState([]);
 
-  const calcularDose = () => {
-    // Realiza o cálculo da dose
-    const doseIndicada = 0.06; // Dose indicada do medicamento
-    const concentracao = 0.5; // Concentração do medicamento
-    const resultado = (doseIndicada * peso) / concentracao;
 
-    setVolume(resultado.toFixed(2)); // Atualiza o estado do volume com o resultado do cálculo
+  // Função para calcular o volume de medicamento com base no peso do paciente
+  const calcularVolumeMedicamento = (nomeMedicamento, doseIndicada, concentracao) => {
+    const volume = (doseIndicada * pesoPaciente) / concentracao;
+    return volume.toFixed(3);
+  };
+
+  // Função para lidar com o pressionamento do botão de cálculo
+  const handleCalcular = () => {
+    // Cálculos para cada medicamento
+    const resultadosCalculados = medicamentos.map(med => ({
+      nome: med.nome,
+      volume: calcularVolumeMedicamento(med.nome, med.doseIndicada, med.concentracao),
+    }));
+    setResultados(resultadosCalculados);
+
+  // const resultadosReversores = reversores.map(med => ({
+  //     nome: med.nomeReversor,
+  //     volume: calcularVolumeMedicamento(med.nomeReversor, med.doseIndicada, med.concentracao),
+  //   }));
+  //   setResultados(resultadosReversores);
   };
 
   return (
-    <SafeAreaView style={styles.container}>
-      <Text style={styles.label}>Peso do Paciente (Kg):</Text>
+    <View style={styles.container}>
       <TextInput
         style={styles.input}
         keyboardType="numeric"
-        value={peso}
-        onChangeText={(text) => setPeso(text)}
+        placeholder="Insira o peso do paciente"
+        value={pesoPaciente}
+        onChangeText={setPesoPaciente}
       />
-      <Button title="Calcular" onPress={calcularDose} />
-      {volume !== '' && (
-        <Text style={styles.result}>Volume do Medicamento: {volume} mL</Text>
-      )}
-    </SafeAreaView>
+      <Button 
+        title="Calcular" 
+        onPress={handleCalcular} 
+        color='#330066'/>
+      <FlatList
+        data={resultados}
+        renderItem={({ item }) => (
+          <View style={styles.resultadoItem}>
+            <Text style={styles.resultadoNome}>{item.nome}</Text>
+            <Text style={styles.resultadoVolume}>Volume: {item.volume} ml</Text>
+          </View>
+        )}
+        keyExtractor={item => item.nome}
+      />
+      {/* <FlatList
+        data={resultados}
+        renderItem={({ item }) => (
+          <View style={styles.resultadoItem}>
+            <Text style={styles.resultadoNome}>{item.nomeReversor}</Text>
+            <Text style={styles.resultadoVolume}>Volume: {item.volume} ml</Text>
+          </View>
+        )}
+        keyExtractor={item => item.nomeReversor}
+      /> */}
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingHorizontal: 16,
-  },
-  label: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    marginBottom: 8,
+    padding: 16,
   },
   input: {
-    width: '100%',
     height: 40,
-    borderColor: 'gray',
+    borderColor: 'white',
     borderWidth: 1,
     marginBottom: 16,
     paddingHorizontal: 8,
+    backgroundColor: 'grey',
+    color: 'white'
   },
-  result: {
+  resultadoItem: {
+    marginBottom: 8,
+  },
+  resultadoNome: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    color: 'grey',
+  },
+  resultadoVolume: {
     fontSize: 16,
-    marginTop: 16,
+    textAlign: 'center',
+    color: 'grey',
   },
 });
 
-export default Calculadora;
+export default CalculadoraDosesScreen;

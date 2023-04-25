@@ -1,24 +1,17 @@
 import React, { Component } from 'react'
 import { StyleSheet, View, Text } from 'react-native'
-import Calculadora from "./src/components/Calculadora"
+import CalculadoraDosesScreen from './src/components/Calculadora'
 
-// const initialState = {
-//   displayValue: '0',
-//   clearDisplay: false,
-//   operation: null,
-//   values: [0, 0],
-//   current: 0,
-
-// }
 
 export default class App extends Component {
    
     render () {
         return (
             <View style={styles.container}>
-                <Calculadora>
-
-                </Calculadora>
+                <Text style={styles.titulo}>
+                    Calculadora de Anestésicos Roedores
+                </Text>
+                <CalculadoraDosesScreen style={styles.board}/>
             </View>
         )
     }
@@ -28,10 +21,13 @@ export default class App extends Component {
 const styles = StyleSheet.create({
     container: {
       flex: 1,
-      justifyContent: 'flex-end',
+      backgroundColor: 'black',
     },
-    board: {
-      alignItems: 'center',
-      backgroundColor: '#AAA',
+    titulo: {
+        padding: 16,
+        fontSize: 20,
+        fontWeight: 'bold',
+        textAlign: 'center',
+        color: 'grey',
     },
 });
